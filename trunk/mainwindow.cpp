@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "optionsdialog.h"
 
 #include <QDebug>
 #include <QImage>
@@ -53,8 +54,10 @@ MainWindow::MainWindow(QWidget *parent)
     , m_depthmapItem(new QGraphicsPixmapItem)
     , m_tileItem(new QGraphicsPixmapItem)
     , m_stereogramItem(new QGraphicsPixmapItem)
+    , m_settings(0)
 {
     ui->setupUi(this);
+    m_settings = new QSettings("Onrakan", "onrakan");
     m_arrangementScene->addItem(m_depthmapItem);
     m_arrangementScene->addItem(m_tileItem);
     m_tileItem->setFlag(QGraphicsItem::ItemIsMovable);
@@ -72,9 +75,11 @@ MainWindow::MainWindow(QWidget *parent)
     loadDepthMap(depthMapFile);
     loadTile(tileFile);
 
-    connect(ui->actionLoadDepthMap, SIGNAL(triggered()), SLOT(depthMapDialog()));
-    connect(ui->actionLoadTileFromFile, SIGNAL(triggered()), SLOT(tileDialog()));
-    connect(ui->actionLoadRandomDotTile, SIGNAL(triggered()), SLOT(loadRandomDotTile()));
+    connect(ui->action_LoadDepthMap, SIGNAL(triggered()), SLOT(depthMapDialog()));
+    connect(ui->action_LoadTileFromFile, SIGNAL(triggered()), SLOT(tileDialog()));
+    connect(ui->action_LoadRandomDotTile, SIGNAL(triggered()), SLOT(loadRandomDotTile()));
+    connect(ui->action_Options, SIGNAL(triggered()), SLOT(optionsDialog()));
+
     connect(ui->generateStereogramButton, SIGNAL(clicked()), SLOT(generateStereogram()));
 }
 
@@ -152,11 +157,20 @@ void MainWindow::generateStereogram()
     m_stereogramItem->setPos(-xDelta, 0);
 }
 
+void MainWindow::optionsDialog()
+{
+    OptionsDialog dialog(m_settings, this);
+    bool ok = dialog.exec();
+    if (ok)
+        qDebug() << "Gotta redo the stereogram";
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
     delete m_arrangementScene;
     delete m_stereogramScene;
+    delete m_settings;
 }
 
 void MainWindow::changeEvent(QEvent *e)

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
+#include <QSettings>
 
 namespace Ui {
     class MainWindow;
@@ -27,11 +28,13 @@ public slots:
     void tileDialog();
     void loadRandomDotTile();
     void generateStereogram();
+    void optionsDialog();
 
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *m_arrangementScene, *m_stereogramScene;
     QGraphicsPixmapItem *m_depthmapItem, *m_tileItem, *m_stereogramItem;
+    QSettings *m_settings;
 };
 
 #endif // MAINWINDOW_H

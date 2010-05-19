@@ -8,11 +8,14 @@ UI_DIR = build
 RCC_DIR = build
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    optionsdialog.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    optionsdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    optionsdialog.ui
 
 RESOURCES += \
     onrakan.qrc
