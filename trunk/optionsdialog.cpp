@@ -67,7 +67,7 @@ void OptionsDialog::saveToSettings()
         m_settings->setValue("screenToBackgroundDistance", ui->screenToBackground->value());
         m_settings->setValue("betweenEyesDistance", ui->betweenEyes->value());
         m_settings->setValue("horizontalResolution", ui->horizontalResolution->value());
-        m_settings->setValue("verticalResolution", ui->horizontalResolution->value());
+        m_settings->setValue("verticalResolution", ui->verticalResolution->value());
         m_settings->setValue("verticalResolutionSameAsHorizontalResolution", ui->sameAsHorizontalResolution->isChecked());
         m_settings->endGroup();
     }
