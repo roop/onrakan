@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QSettings>
+#include <QAbstractButton>
 
 namespace Ui {
     class OptionsDialog;
@@ -18,6 +19,9 @@ public slots:
     void loadDefaultValues();
     void loadFromSettings();
     void saveToSettings();
+
+private slots:
+    void handleButtonClicked(QAbstractButton *button);
 
 protected:
     void changeEvent(QEvent *e);
