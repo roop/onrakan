@@ -100,9 +100,10 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionNew"/>
-    <addaction name="actionSave"/>
-    <addaction name="actionExit"/>
+    <addaction name="action_New"/>
+    <addaction name="action_LoadOnrakan"/>
+    <addaction name="action_Save"/>
+    <addaction name="action_Quit"/>
    </widget>
    <widget class="QMenu" name="menuStereogram">
     <property name="title">
@@ -112,12 +113,13 @@
      <property name="title">
       <string>Load tile</string>
      </property>
-     <addaction name="actionLoadTileFromFile"/>
-     <addaction name="actionLoadRandomDotTile"/>
+     <addaction name="action_LoadTileFromFile"/>
+     <addaction name="action_LoadRandomDotTile"/>
     </widget>
-    <addaction name="actionLoadDepthMap"/>
+    <addaction name="action_LoadDepthMap"/>
     <addaction name="menuSet_tile"/>
-    <addaction name="actionExport"/>
+    <addaction name="action_Export"/>
+    <addaction name="action_Options"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuStereogram"/>
@@ -131,12 +133,15 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionNew">
+  <action name="action_New">
    <property name="text">
     <string>&amp;New onrakan</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
   </action>
-  <action name="actionSave">
+  <action name="action_Save">
    <property name="text">
     <string>&amp;Save onrakan</string>
    </property>
@@ -144,7 +149,7 @@
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="actionExit">
+  <action name="action_Quit">
    <property name="text">
     <string>&amp;Quit</string>
    </property>
@@ -155,7 +160,7 @@
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="actionLoadDepthMap">
+  <action name="action_LoadDepthMap">
    <property name="text">
     <string>Load &amp;depthmap</string>
    </property>
@@ -166,7 +171,7 @@
     <string>Ctrl+D</string>
    </property>
   </action>
-  <action name="actionExport">
+  <action name="action_Export">
    <property name="text">
     <string>Export stereogram</string>
    </property>
@@ -177,7 +182,7 @@
     <string>Ctrl+E</string>
    </property>
   </action>
-  <action name="actionLoadTileFromFile">
+  <action name="action_LoadTileFromFile">
    <property name="text">
     <string>from file</string>
    </property>
@@ -188,12 +193,28 @@
     <string>Ctrl+T</string>
    </property>
   </action>
-  <action name="actionLoadRandomDotTile">
+  <action name="action_LoadRandomDotTile">
    <property name="text">
     <string>random dot</string>
    </property>
    <property name="toolTip">
     <string>Auto-generate a new random-dot image for use as the tile</string>
+   </property>
+  </action>
+  <action name="action_LoadOnrakan">
+   <property name="text">
+    <string>&amp;Load onrakan</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="action_Options">
+   <property name="text">
+    <string>&amp;Options</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
  </widget>
