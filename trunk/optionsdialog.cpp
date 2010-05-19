@@ -10,6 +10,7 @@ OptionsDialog::OptionsDialog(QSettings *settings, QWidget *parent) :
     loadDefaultValues();
     loadFromSettings();
     connect(this, SIGNAL(accepted()), this, SLOT(saveToSettings()));
+    connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(handleButtonClicked(QAbstractButton*)));
 }
 
 OptionsDialog::~OptionsDialog()
@@ -69,6 +70,13 @@ void OptionsDialog::saveToSettings()
         m_settings->setValue("verticalResolution", ui->horizontalResolution->value());
         m_settings->setValue("verticalResolutionSameAsHorizontalResolution", ui->sameAsHorizontalResolution->isChecked());
         m_settings->endGroup();
+    }
+}
+
+void OptionsDialog::handleButtonClicked(QAbstractButton *button)
+{
+    if (ui->buttonBox->standardButton(button) == QDialogButtonBox::RestoreDefaults) {
+        loadDefaultValues();
     }
 }
 
