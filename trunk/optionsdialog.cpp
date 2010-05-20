@@ -9,7 +9,6 @@ OptionsDialog::OptionsDialog(Settings *settings, QWidget *parent) :
     Q_ASSERT(m_settings);
     m_settings = settings;
     loadFromSettings();
-    connect(this, SIGNAL(accepted()), this, SLOT(saveToSettings()));
     connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(handleButtonClicked(QAbstractButton*)));
 }
 
@@ -56,6 +55,8 @@ void OptionsDialog::handleButtonClicked(QAbstractButton *button)
 {
     if (ui->buttonBox->standardButton(button) == QDialogButtonBox::RestoreDefaults) {
         loadDefaultValues();
+    } else if (ui->buttonBox->standardButton(button) == QDialogButtonBox::Ok) {
+        saveToSettings();
     }
 }
 
