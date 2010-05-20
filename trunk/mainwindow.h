@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
-#include <QSettings>
+#include "settings.h"
 
 namespace Ui {
     class MainWindow;
@@ -34,7 +34,7 @@ private:
     Ui::MainWindow *ui;
     QGraphicsScene *m_arrangementScene, *m_stereogramScene;
     QGraphicsPixmapItem *m_depthmapItem, *m_tileItem, *m_stereogramItem;
-    QSettings *m_settings;
+    Settings *m_settings;
 };
 
 #endif // MAINWINDOW_H
