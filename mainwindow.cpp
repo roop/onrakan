@@ -57,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_settings(0)
 {
     ui->setupUi(this);
-    m_settings = new QSettings("Onrakan", "onrakan");
+    m_settings = new Settings(this);
     m_arrangementScene->addItem(m_depthmapItem);
     m_arrangementScene->addItem(m_tileItem);
     m_tileItem->setFlag(QGraphicsItem::ItemIsMovable);
@@ -170,7 +170,6 @@ MainWindow::~MainWindow()
     delete ui;
     delete m_arrangementScene;
     delete m_stereogramScene;
-    delete m_settings;
 }
 
 void MainWindow::changeEvent(QEvent *e)

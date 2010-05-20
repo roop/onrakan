@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QSettings>
 #include <QAbstractButton>
+#include "settings.h"
 
 namespace Ui {
     class OptionsDialog;
@@ -12,7 +13,7 @@ namespace Ui {
 class OptionsDialog : public QDialog {
     Q_OBJECT
 public:
-    explicit OptionsDialog(QSettings *settings = 0, QWidget *parent = 0);
+    explicit OptionsDialog(Settings *settings = 0, QWidget *parent = 0);
     ~OptionsDialog();
 
 public slots:
@@ -28,7 +29,7 @@ protected:
 
 private:
     Ui::OptionsDialog *ui;
-    QSettings *m_settings;
+    Settings *m_settings;
 };
 
 #endif // OPTIONSDIALOG_H

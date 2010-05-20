@@ -1,13 +1,13 @@
 #include "optionsdialog.h"
 #include "ui_optionsdialog.h"
 
-OptionsDialog::OptionsDialog(QSettings *settings, QWidget *parent) :
+OptionsDialog::OptionsDialog(Settings *settings, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::OptionsDialog)
 {
     ui->setupUi(this);
+    Q_ASSERT(m_settings);
     m_settings = settings;
-    loadDefaultValues();
     loadFromSettings();
     connect(this, SIGNAL(accepted()), this, SLOT(saveToSettings()));
     connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(handleButtonClicked(QAbstractButton*)));
@@ -20,55 +20,34 @@ OptionsDialog::~OptionsDialog()
 
 void OptionsDialog::loadDefaultValues()
 {
-    ui->observerToScreen->setValue(15);
-    ui->screenToBackground->setValue(15);
-    ui->betweenEyes->setValue(2.5);
-    ui->horizontalResolution->setValue(72);
-    ui->verticalResolution->setValue(72);
-    ui->sameAsHorizontalResolution->setChecked(true);
+    ui->observerToScreen->setValue(m_settings->option("observerToScreenInches", Settings::DefaultOption).toDouble());
+    ui->screenToBackground->setValue(m_settings->option("screenToBackgroundInches", Settings::DefaultOption).toDouble());
+    ui->betweenEyes->setValue(m_settings->option("betweenEyesInches", Settings::DefaultOption).toDouble());
+    ui->horizontalResolution->setValue(m_settings->option("horizontalResolutionPpi", Settings::DefaultOption).toInt());
+    ui->verticalResolution->setValue(m_settings->option("verticalResolutionPpi", Settings::DefaultOption).toInt());
+    ui->sameAsHorizontalResolution->setChecked(m_settings->option("verticalResolutionSameAsHorizontalResolutionBool", Settings::DefaultOption).toBool());
 }
 
 void OptionsDialog::loadFromSettings()
 {
-    if (m_settings) {
-        m_settings->beginGroup("Options");
-        bool ok;
-        double valueDouble;
-        valueDouble = m_settings->value("observerToScreenDistance").toDouble(&ok);
-        if (ok)
-            ui->observerToScreen->setValue(valueDouble);
-        valueDouble = m_settings->value("screenToBackgroundDistance").toDouble(&ok);
-        if (ok)
-            ui->screenToBackground->setValue(valueDouble);
-        valueDouble = m_settings->value("betweenEyesDistance").toDouble(&ok);
-        if (ok)
-            ui->betweenEyes->setValue(valueDouble);
-        int valueInt;
-        valueInt = m_settings->value("horizontalResolution").toInt(&ok);
-        if (ok)
-            ui->horizontalResolution->setValue(valueInt);
-        valueInt = m_settings->value("verticalResolution").toInt(&ok);
-        if (ok)
-            ui->verticalResolution->setValue(valueInt);
-        bool checked;
-        if (m_settings->contains("verticalResolutionSameAsHorizontalResolution")) {
-            checked = m_settings->value("verticalResolutionSameAsHorizontalResolution").toBool();
-            ui->sameAsHorizontalResolution->setChecked(checked);
-        }
-        m_settings->endGroup();
-    }
+    ui->observerToScreen->setValue(m_settings->option("observerToScreenInches", Settings::SpecifiedOption).toDouble());
+    ui->screenToBackground->setValue(m_settings->option("screenToBackgroundInches", Settings::SpecifiedOption).toDouble());
+    ui->betweenEyes->setValue(m_settings->option("betweenEyesInches", Settings::SpecifiedOption).toDouble());
+    ui->horizontalResolution->setValue(m_settings->option("horizontalResolutionPpi", Settings::SpecifiedOption).toInt());
+    ui->verticalResolution->setValue(m_settings->option("verticalResolutionPpi", Settings::SpecifiedOption).toInt());
+    ui->sameAsHorizontalResolution->setChecked(m_settings->option("verticalResolutionSameAsHorizontalResolutionBool", Settings::SpecifiedOption).toBool());
 }
 
 void OptionsDialog::saveToSettings()
 {
     if (m_settings) {
         m_settings->beginGroup("Options");
-        m_settings->setValue("observerToScreenDistance", ui->observerToScreen->value());
-        m_settings->setValue("screenToBackgroundDistance", ui->screenToBackground->value());
-        m_settings->setValue("betweenEyesDistance", ui->betweenEyes->value());
-        m_settings->setValue("horizontalResolution", ui->horizontalResolution->value());
-        m_settings->setValue("verticalResolution", ui->verticalResolution->value());
-        m_settings->setValue("verticalResolutionSameAsHorizontalResolution", ui->sameAsHorizontalResolution->isChecked());
+        m_settings->setValue("observerToScreenInches", ui->observerToScreen->value());
+        m_settings->setValue("screenToBackgroundInches", ui->screenToBackground->value());
+        m_settings->setValue("betweenEyesInches", ui->betweenEyes->value());
+        m_settings->setValue("horizontalResolutionPpi", ui->horizontalResolution->value());
+        m_settings->setValue("verticalResolutionPpi", ui->verticalResolution->value());
+        m_settings->setValue("verticalResolutionSameAsHorizontalResolutionBool", ui->sameAsHorizontalResolution->isChecked());
         m_settings->endGroup();
     }
 }
