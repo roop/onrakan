@@ -16,6 +16,7 @@ class OptionsDialog : public QDialog {
 public:
     explicit OptionsDialog(Settings *settings = 0, QWidget *parent = 0);
     ~OptionsDialog();
+    Settings *settings() const;
 
 public slots:
     void loadDefaultValues();

@@ -18,6 +18,11 @@ OptionsDialog::~OptionsDialog()
     delete ui;
 }
 
+Settings *OptionsDialog::settings() const
+{
+    return m_settings;
+}
+
 void OptionsDialog::loadDefaultValues()
 {
     ui->observerToScreen->setValue(m_settings->option(OBSERVER_TO_SCREEN_IN, Settings::DefaultOption).toDouble());
