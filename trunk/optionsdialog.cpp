@@ -19,34 +19,34 @@ OptionsDialog::~OptionsDialog()
 
 void OptionsDialog::loadDefaultValues()
 {
-    ui->observerToScreen->setValue(m_settings->option("observerToScreenInches", Settings::DefaultOption).toDouble());
-    ui->screenToBackground->setValue(m_settings->option("screenToBackgroundInches", Settings::DefaultOption).toDouble());
-    ui->betweenEyes->setValue(m_settings->option("betweenEyesInches", Settings::DefaultOption).toDouble());
-    ui->horizontalResolution->setValue(m_settings->option("horizontalResolutionPpi", Settings::DefaultOption).toInt());
-    ui->verticalResolution->setValue(m_settings->option("verticalResolutionPpi", Settings::DefaultOption).toInt());
-    ui->sameAsHorizontalResolution->setChecked(m_settings->option("verticalResolutionSameAsHorizontalResolutionBool", Settings::DefaultOption).toBool());
+    ui->observerToScreen->setValue(m_settings->option(OBSERVER_TO_SCREEN_IN, Settings::DefaultOption).toDouble());
+    ui->screenToBackground->setValue(m_settings->option(SCREEN_TO_BG_IN, Settings::DefaultOption).toDouble());
+    ui->betweenEyes->setValue(m_settings->option(BW_EYES_IN, Settings::DefaultOption).toDouble());
+    ui->horizontalResolution->setValue(m_settings->option(H_RES_PPI, Settings::DefaultOption).toInt());
+    ui->verticalResolution->setValue(m_settings->option(V_RES_PPI, Settings::DefaultOption).toInt());
+    ui->sameAsHorizontalResolution->setChecked(m_settings->option(V_RES_EQ_H_RES, Settings::DefaultOption).toBool());
 }
 
 void OptionsDialog::loadFromSettings()
 {
-    ui->observerToScreen->setValue(m_settings->option("observerToScreenInches", Settings::SpecifiedOption).toDouble());
-    ui->screenToBackground->setValue(m_settings->option("screenToBackgroundInches", Settings::SpecifiedOption).toDouble());
-    ui->betweenEyes->setValue(m_settings->option("betweenEyesInches", Settings::SpecifiedOption).toDouble());
-    ui->horizontalResolution->setValue(m_settings->option("horizontalResolutionPpi", Settings::SpecifiedOption).toInt());
-    ui->verticalResolution->setValue(m_settings->option("verticalResolutionPpi", Settings::SpecifiedOption).toInt());
-    ui->sameAsHorizontalResolution->setChecked(m_settings->option("verticalResolutionSameAsHorizontalResolutionBool", Settings::SpecifiedOption).toBool());
+    ui->observerToScreen->setValue(m_settings->option(OBSERVER_TO_SCREEN_IN, Settings::SpecifiedOption).toDouble());
+    ui->screenToBackground->setValue(m_settings->option(SCREEN_TO_BG_IN, Settings::SpecifiedOption).toDouble());
+    ui->betweenEyes->setValue(m_settings->option(BW_EYES_IN, Settings::SpecifiedOption).toDouble());
+    ui->horizontalResolution->setValue(m_settings->option(H_RES_PPI, Settings::SpecifiedOption).toInt());
+    ui->verticalResolution->setValue(m_settings->option(V_RES_PPI, Settings::SpecifiedOption).toInt());
+    ui->sameAsHorizontalResolution->setChecked(m_settings->option(V_RES_EQ_H_RES, Settings::SpecifiedOption).toBool());
 }
 
 void OptionsDialog::saveToSettings()
 {
     if (m_settings) {
         m_settings->beginGroup("Options");
-        m_settings->setValue("observerToScreenInches", ui->observerToScreen->value());
-        m_settings->setValue("screenToBackgroundInches", ui->screenToBackground->value());
-        m_settings->setValue("betweenEyesInches", ui->betweenEyes->value());
-        m_settings->setValue("horizontalResolutionPpi", ui->horizontalResolution->value());
-        m_settings->setValue("verticalResolutionPpi", ui->verticalResolution->value());
-        m_settings->setValue("verticalResolutionSameAsHorizontalResolutionBool", ui->sameAsHorizontalResolution->isChecked());
+        m_settings->setValue(OBSERVER_TO_SCREEN_IN, ui->observerToScreen->value());
+        m_settings->setValue(SCREEN_TO_BG_IN, ui->screenToBackground->value());
+        m_settings->setValue(BW_EYES_IN, ui->betweenEyes->value());
+        m_settings->setValue(H_RES_PPI, ui->horizontalResolution->value());
+        m_settings->setValue(V_RES_PPI, ui->verticalResolution->value());
+        m_settings->setValue(V_RES_EQ_H_RES, ui->sameAsHorizontalResolution->isChecked());
         m_settings->endGroup();
     }
 }
