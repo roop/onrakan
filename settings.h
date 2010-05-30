@@ -24,4 +24,11 @@ private:
     QMap<QString, QVariant> m_defaultOptions;
 };
 
+#define OBSERVER_TO_SCREEN_IN "observerToScreenInches"
+#define SCREEN_TO_BG_IN "screenToBackgroundInches"
+#define BW_EYES_IN "betweenEyesInches"
+#define H_RES_PPI "horizontalResolutionPpi"
+#define V_RES_PPI "verticalResolutionPpi"
+#define V_RES_EQ_H_RES "verticalResolutionSameAsHorizontalResolutionBool"
+
 #endif // OPTIONS_H
