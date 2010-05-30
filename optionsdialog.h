@@ -4,11 +4,12 @@
 #include <QDialog>
 #include <QSettings>
 #include <QAbstractButton>
-#include "settings.h"
 
 namespace Ui {
     class OptionsDialog;
 }
+
+class Settings;
 
 class OptionsDialog : public QDialog {
     Q_OBJECT
