@@ -9,43 +9,6 @@
 #include <QFileDialog>
 #include <QApplication>
 
-static QImage stereogram(const QImage &depthMap, const QImage &tile, int tileoffset = 0, int *xDelta = 0)
-{
-    int tileWidth = qMin(depthMap.width(), tile.width());
-    int tileHeight = tile.height();
-    tileoffset = tileoffset % tileWidth;
-    if (tileoffset >= 0)
-        tileoffset = tileoffset - tileWidth;
-    Q_ASSERT(tileoffset < 0);
-    int depthMapOffset = -tileoffset;
-    QSize stereoImageSize(depthMap.width() + depthMapOffset, depthMap.height());
-    QImage stereoImage(stereoImageSize, QImage::Format_RGB32);
-
-    // fill the first tile
-    int x = 0;
-    for ( ; x < tileWidth; x++) {
-        for (int y = 0; y < stereoImage.height(); y++) {
-            QRgb pix = tile.pixel(x, y % tileHeight);
-            stereoImage.setPixel(x, y, pix);
-        }
-    }
-
-    // fill other tiles using the previous tile
-    for ( ; x < stereoImage.width(); x++) {
-        for (int y = 0; y < stereoImage.height(); y++) {
-            int depthPixel = depthMap.pixel(x - depthMapOffset, y);
-            int depthGray = (qRed(depthPixel) + qGreen(depthPixel) + qBlue(depthPixel)) / 3;
-            int depth = depthGray % (tileWidth / 4);
-            QRgb pix = stereoImage.pixel(x - tileWidth + depth, y);
-            stereoImage.setPixel(x, y, pix);
-        }
-    }
-    if (xDelta)
-        *xDelta = depthMapOffset;
-
-    return stereoImage;
-}
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -66,8 +29,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stereogramGraphicsView->setScene(m_stereogramScene);
     // loadDepthMap(":/images/default_depth_map.png");
     // loadRandomDotTile();
-    QString depthMapFile = "/home/roop/tmp/boxes.png";
-    QString tileFile = "/home/roop/tile.png";
+    QString depthMapFile = ":/images/default_depth_map.png";
+    QString tileFile = "../../../web/bluetile.jpg";
     if (QApplication::arguments().size() > 1)
         depthMapFile = QApplication::arguments().at(1);
     if (QApplication::arguments().size() > 2)
@@ -151,10 +114,13 @@ void MainWindow::generateStereogram()
 {
     QImage depthMap = m_depthmapItem->pixmap().toImage();
     QImage tile = m_tileItem->pixmap().toImage();
-    int tileoffset = int(m_tileItem->pos().x() - m_depthmapItem->pos().x());
-    int xDelta = 0;
-    m_stereogramItem->setPixmap(QPixmap::fromImage(stereogram(depthMap, tile, tileoffset, &xDelta)));
-    m_stereogramItem->setPos(-xDelta, 0);
+    m_stereogram.setDepthMap(depthMap);
+    m_stereogram.setTile(tile);
+    m_stereogram.setBetweenEyes(m_settings->option(BW_EYES_IN, Settings::Pixel).toInt());
+    m_stereogram.setObserverToScreen(m_settings->option(OBSERVER_TO_SCREEN_IN, Settings::Pixel).toInt());
+    m_stereogram.setScreenToBackground(m_settings->option(SCREEN_TO_BG_IN, Settings::Pixel).toInt());
+    m_stereogramItem->setPixmap(QPixmap::fromImage(m_stereogram.stereogram()));
+    m_stereogramItem->setPos(0, 0);
 }
 
 void MainWindow::optionsDialog()
