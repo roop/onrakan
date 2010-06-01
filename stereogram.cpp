@@ -2,7 +2,7 @@
 #include "stereogram.h"
 
 QImage generateStereogram(const QImage &depthmap,
-                          const QImage &tile,
+                          const QImage &_tile,
                           int observerToScreen,
                           int screenToBackground,
                           int betweenEyes)
@@ -12,6 +12,12 @@ QImage generateStereogram(const QImage &depthmap,
     Q_ASSERT(betweenEyes > 0);
     Q_ASSERT(screenToBackground <= observerToScreen);
 
+    int separationMax = (betweenEyes * screenToBackground) / (observerToScreen + screenToBackground);
+    QImage tile = _tile;
+    if (tile.width() != separationMax)
+        tile = _tile.scaledToWidth(separationMax);
+    int separationMin = 0.5 * separationMax; // we wont be comfortable squinting any further
+    int depthMin = (observerToScreen * separationMin) / (betweenEyes - separationMin);
     QImage stereoImage(depthmap.size(), QImage::Format_RGB32);
     for (int y = 0; y < depthmap.height(); y++) {
         const QRgb *depthmapLine = reinterpret_cast<const QRgb*>(depthmap.scanLine(y));
@@ -20,9 +26,12 @@ QImage generateStereogram(const QImage &depthmap,
             same[x] = x;
         }
         for (int x = 0; x < depthmap.width(); x++) {
-            // fit depth into a range of [0, screenToBackground]
-            int depth = ((255 - qGray(depthmapLine[x])) / 255) * screenToBackground;
-            int separation = (betweenEyes * depth) / (depth + observerToScreen);
+            // fit depth into a range of [depthMin, screenToBackground]
+            double depthZeroToOne = ((255 - qGray(depthmapLine[x])) / 255.0);
+            int depth = depthMin + (depthZeroToOne * (screenToBackground - depthMin));
+            int separation = (betweenEyes * depth) / (observerToScreen + depth);
+            Q_ASSERT(separation >= separationMin);
+            Q_ASSERT(separation <= separationMax);
             int left = x - separation / 2;
             int right = left + separation;
             Q_ASSERT(left <= right);
