@@ -10,11 +10,13 @@ RCC_DIR = build
 SOURCES += main.cpp\
         mainwindow.cpp \
     optionsdialog.cpp \
-    settings.cpp
+    settings.cpp \
+    stereogram.cpp
 
 HEADERS  += mainwindow.h \
     optionsdialog.h \
-    settings.h
+    settings.h \
+    stereogram.h
 
 FORMS    += mainwindow.ui \
     optionsdialog.ui
