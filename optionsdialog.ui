@@ -167,7 +167,7 @@ with the backward-most point in the background plane</string>
         <item row="0" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Horizontal</string>
+           <string>Horizontal resolution</string>
           </property>
          </widget>
         </item>
@@ -193,7 +193,7 @@ with the backward-most point in the background plane</string>
            <string>Pixels Per Inch</string>
           </property>
           <property name="text">
-           <string>ppi</string>
+           <string>pixels per inch</string>
           </property>
          </widget>
         </item>
