@@ -12,8 +12,6 @@ void Settings::initialize()
     m_defaultOptions[SCREEN_TO_BG_IN] = 15;
     m_defaultOptions[BW_EYES_IN] = 2.5;
     m_defaultOptions[H_RES_PPI] = 72;
-    m_defaultOptions[V_RES_PPI] = 72;
-    m_defaultOptions[V_RES_EQ_H_RES] = true;
 }
 
 QVariant Settings::option(const QString &key, OptionType type)
@@ -32,8 +30,7 @@ QVariant Settings::option(const QString &key, OptionType type)
             if (ok)
                 return val;
             return option(key, DefaultOption);
-        } else if (key == H_RES_PPI ||
-                   key == V_RES_PPI) {
+        } else if (key == H_RES_PPI) {
             bool ok;
             int val = variantValue.toInt(&ok);
             if (ok)

@@ -29,8 +29,6 @@ void OptionsDialog::loadDefaultValues()
     ui->screenToBackground->setValue(m_settings->option(SCREEN_TO_BG_IN, Settings::DefaultOption).toDouble());
     ui->betweenEyes->setValue(m_settings->option(BW_EYES_IN, Settings::DefaultOption).toDouble());
     ui->horizontalResolution->setValue(m_settings->option(H_RES_PPI, Settings::DefaultOption).toInt());
-    ui->verticalResolution->setValue(m_settings->option(V_RES_PPI, Settings::DefaultOption).toInt());
-    ui->sameAsHorizontalResolution->setChecked(m_settings->option(V_RES_EQ_H_RES, Settings::DefaultOption).toBool());
 }
 
 void OptionsDialog::loadFromSettings()
@@ -39,8 +37,6 @@ void OptionsDialog::loadFromSettings()
     ui->screenToBackground->setValue(m_settings->option(SCREEN_TO_BG_IN, Settings::SpecifiedOption).toDouble());
     ui->betweenEyes->setValue(m_settings->option(BW_EYES_IN, Settings::SpecifiedOption).toDouble());
     ui->horizontalResolution->setValue(m_settings->option(H_RES_PPI, Settings::SpecifiedOption).toInt());
-    ui->verticalResolution->setValue(m_settings->option(V_RES_PPI, Settings::SpecifiedOption).toInt());
-    ui->sameAsHorizontalResolution->setChecked(m_settings->option(V_RES_EQ_H_RES, Settings::SpecifiedOption).toBool());
 }
 
 void OptionsDialog::saveToSettings()
@@ -51,8 +47,6 @@ void OptionsDialog::saveToSettings()
         m_settings->setValue(SCREEN_TO_BG_IN, ui->screenToBackground->value());
         m_settings->setValue(BW_EYES_IN, ui->betweenEyes->value());
         m_settings->setValue(H_RES_PPI, ui->horizontalResolution->value());
-        m_settings->setValue(V_RES_PPI, ui->verticalResolution->value());
-        m_settings->setValue(V_RES_EQ_H_RES, ui->sameAsHorizontalResolution->isChecked());
         m_settings->endGroup();
     }
 }
