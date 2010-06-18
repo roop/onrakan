@@ -119,6 +119,7 @@ void MainWindow::generateStereogram()
     m_stereogram.setBetweenEyes(m_settings->option(BW_EYES_IN, Settings::Pixel).toInt());
     m_stereogram.setObserverToScreen(m_settings->option(OBSERVER_TO_SCREEN_IN, Settings::Pixel).toInt());
     m_stereogram.setScreenToBackground(m_settings->option(SCREEN_TO_BG_IN, Settings::Pixel).toInt());
+    m_stereogram.setTileOffset(m_tileItem->pos().toPoint() - m_depthmapItem->pos().toPoint());
     m_stereogramItem->setPixmap(QPixmap::fromImage(m_stereogram.stereogram()));
     m_stereogramItem->setPos(0, 0);
 }
