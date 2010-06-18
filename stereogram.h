@@ -14,6 +14,7 @@ public:
     void setObserverToScreen(int pixels);
     void setScreenToBackground(int pixels);
     void setBetweenEyes(int pixels);
+    void setTileOffset(const QPoint &tileOffset);
     QImage stereogram();
 
 private:
@@ -21,6 +22,7 @@ private:
     QImage m_depthmap;
     QImage m_tile;
     int m_observerToScreen, m_screenToBackground, m_betweenEyes;
+    QPoint m_tileOffset;
     QImage m_stereogram;
 };
 

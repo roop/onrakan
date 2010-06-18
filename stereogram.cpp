@@ -5,7 +5,8 @@ QImage generateStereogram(const QImage &depthmap,
                           const QImage &_tile,
                           int observerToScreen,
                           int screenToBackground,
-                          int betweenEyes)
+                          int betweenEyes,
+                          const QPoint &_tileOffset)
 {
     Q_ASSERT(observerToScreen > 0);
     Q_ASSERT(screenToBackground > 0);
@@ -52,11 +53,17 @@ QImage generateStereogram(const QImage &depthmap,
             same[left] = right;
         }
         // write the stereogram
+        QPoint tileOffset = _tileOffset;
+        tileOffset.setY(-tileOffset.y());
+        while (tileOffset.y() < 0)
+            tileOffset.setY(tileOffset.y() + tile.height());
+        while (tileOffset.x() < 0)
+            tileOffset.setX(tileOffset.x() + tile.width());
         QRgb *stereogramLine = reinterpret_cast<QRgb*>(stereoImage.scanLine(y));
-        const QRgb *tileLine = reinterpret_cast<const QRgb*>(tile.scanLine(y % tile.height()));
+        const QRgb *tileLine = reinterpret_cast<const QRgb*>(tile.scanLine((y + tileOffset.y()) % tile.height()));
         for (int x = depthmap.width() - 1; x >= 0; x--) {
             if (same[x] == x) {
-                stereogramLine[x] = tileLine[x % tile.width()];
+                stereogramLine[x] = tileLine[(x + tileOffset.x()) % tile.width()];
             } else {
                 stereogramLine[x] = stereogramLine[same[x]];
             }
@@ -114,6 +121,14 @@ void Stereogram::setBetweenEyes(int pixels)
     }
 }
 
+void Stereogram::setTileOffset(const QPoint &tileOffset)
+{
+    if (m_tileOffset != tileOffset) {
+        m_tileOffset = tileOffset;
+        m_isDirty = true;
+    }
+}
+
 QImage Stereogram::stereogram()
 {
     if (m_depthmap.isNull() || m_tile.isNull())
@@ -123,7 +138,8 @@ QImage Stereogram::stereogram()
                                           m_tile,
                                           m_observerToScreen,
                                           m_screenToBackground,
-                                          m_betweenEyes);
+                                          m_betweenEyes,
+                                          m_tileOffset);
     }
     return m_stereogram;
 }
