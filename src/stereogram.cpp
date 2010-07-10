@@ -75,9 +75,6 @@ QImage generateStereogram(const QImage &depthmap,
 
 Stereogram::Stereogram()
     : m_isDirty(false)
-    , m_observerToScreen(1000)
-    , m_screenToBackground(1000)
-    , m_betweenEyes(100)
 {
 }
 
@@ -97,26 +94,10 @@ void Stereogram::setTile(const QImage &tile)
     }
 }
 
-void Stereogram::setObserverToScreen(int pixels)
+void Stereogram::setParameters(const StereogramParameters &parameters)
 {
-    if (m_observerToScreen != pixels) {
-        m_observerToScreen = pixels;
-        m_isDirty = true;
-    }
-}
-
-void Stereogram::setScreenToBackground(int pixels)
-{
-    if (m_screenToBackground != pixels) {
-        m_screenToBackground = pixels;
-        m_isDirty = true;
-    }
-}
-
-void Stereogram::setBetweenEyes(int pixels)
-{
-    if (m_betweenEyes != pixels) {
-        m_betweenEyes = pixels;
+    if (m_parameters != parameters) {
+        m_parameters = parameters;
         m_isDirty = true;
     }
 }
@@ -136,9 +117,9 @@ QImage Stereogram::stereogram()
     if (m_isDirty) {
         m_stereogram = generateStereogram(m_depthmap,
                                           m_tile,
-                                          m_observerToScreen,
-                                          m_screenToBackground,
-                                          m_betweenEyes,
+                                          m_parameters.observerToScreenPx(),
+                                          m_parameters.screenToBackgroundPx(),
+                                          m_parameters.betweenEyesPx(),
                                           m_tileOffset);
     }
     return m_stereogram;

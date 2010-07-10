@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
-#include "settings.h"
+#include <QSettings>
 #include "stereogram.h"
 
 namespace Ui {
@@ -35,7 +35,7 @@ private:
     Ui::MainWindow *ui;
     QGraphicsScene *m_arrangementScene, *m_stereogramScene;
     QGraphicsPixmapItem *m_depthmapItem, *m_tileItem, *m_stereogramItem;
-    Settings *m_settings;
+    QSettings *m_settings;
     Stereogram m_stereogram;
 };
 

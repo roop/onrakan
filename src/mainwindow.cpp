@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_settings(0)
 {
     ui->setupUi(this);
-    m_settings = new Settings(this);
+    m_settings = new QSettings("Onrakan", "onrakan", this);
     m_arrangementScene->addItem(m_depthmapItem);
     m_arrangementScene->addItem(m_tileItem);
     m_tileItem->setFlag(QGraphicsItem::ItemIsMovable);
@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     // loadDepthMap(":/images/default_depth_map.png");
     // loadRandomDotTile();
     QString depthMapFile = ":/images/default_depth_map.png";
-    QString tileFile = "../../../web/bluetile.jpg";
+    QString tileFile = "../../../../web/bluetile.jpg";
     if (QApplication::arguments().size() > 1)
         depthMapFile = QApplication::arguments().at(1);
     if (QApplication::arguments().size() > 2)
@@ -116,9 +116,7 @@ void MainWindow::generateStereogram()
     QImage tile = m_tileItem->pixmap().toImage();
     m_stereogram.setDepthMap(depthMap);
     m_stereogram.setTile(tile);
-    m_stereogram.setBetweenEyes(m_settings->option(BW_EYES_IN, Settings::Pixel).toInt());
-    m_stereogram.setObserverToScreen(m_settings->option(OBSERVER_TO_SCREEN_IN, Settings::Pixel).toInt());
-    m_stereogram.setScreenToBackground(m_settings->option(SCREEN_TO_BG_IN, Settings::Pixel).toInt());
+    m_stereogram.setParameters(StereogramParameters::fromSettings(m_settings));
     m_stereogram.setTileOffset(m_tileItem->pos().toPoint() - m_depthmapItem->pos().toPoint());
     m_stereogramItem->setPixmap(QPixmap::fromImage(m_stereogram.stereogram()));
     m_stereogramItem->setPos(0, 0);
