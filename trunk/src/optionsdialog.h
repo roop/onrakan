@@ -4,19 +4,18 @@
 #include <QDialog>
 #include <QSettings>
 #include <QAbstractButton>
+#include "stereogramparameters.h"
 
 namespace Ui {
     class OptionsDialog;
 }
 
-class Settings;
-
 class OptionsDialog : public QDialog {
     Q_OBJECT
 public:
-    explicit OptionsDialog(Settings *settings = 0, QWidget *parent = 0);
+    explicit OptionsDialog(QSettings *settings = 0, QWidget *parent = 0);
     ~OptionsDialog();
-    Settings *settings() const;
+    QSettings *settings() const;
 
 public slots:
     void loadDefaultValues();
@@ -31,7 +30,7 @@ protected:
 
 private:
     Ui::OptionsDialog *ui;
-    Settings *m_settings;
+    QSettings *m_settings;
 };
 
 #endif // OPTIONSDIALOG_H

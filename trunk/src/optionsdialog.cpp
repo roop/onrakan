@@ -1,8 +1,8 @@
 #include "optionsdialog.h"
 #include "ui_optionsdialog.h"
-#include "settings.h"
+#include "stereogramparameters.h"
 
-OptionsDialog::OptionsDialog(Settings *settings, QWidget *parent) :
+OptionsDialog::OptionsDialog(QSettings *settings, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::OptionsDialog)
 {
@@ -18,36 +18,38 @@ OptionsDialog::~OptionsDialog()
     delete ui;
 }
 
-Settings *OptionsDialog::settings() const
+QSettings *OptionsDialog::settings() const
 {
     return m_settings;
 }
 
 void OptionsDialog::loadDefaultValues()
 {
-    ui->observerToScreen->setValue(m_settings->option(OBSERVER_TO_SCREEN_IN, Settings::DefaultOption).toDouble());
-    ui->screenToBackground->setValue(m_settings->option(SCREEN_TO_BG_IN, Settings::DefaultOption).toDouble());
-    ui->betweenEyes->setValue(m_settings->option(BW_EYES_IN, Settings::DefaultOption).toDouble());
-    ui->horizontalResolution->setValue(m_settings->option(H_RES_PPI, Settings::DefaultOption).toInt());
+    StereogramParameters parameters;
+    ui->observerToScreen->setValue(parameters.value(OBSERVER_TO_SCREEN_IN, StereogramParameters::DefaultOption).toDouble());
+    ui->screenToBackground->setValue(parameters.value(SCREEN_TO_BG_IN, StereogramParameters::DefaultOption).toDouble());
+    ui->betweenEyes->setValue(parameters.value(BW_EYES_IN, StereogramParameters::DefaultOption).toDouble());
+    ui->horizontalResolution->setValue(parameters.value(H_RES_PPI, StereogramParameters::DefaultOption).toInt());
 }
 
 void OptionsDialog::loadFromSettings()
 {
-    ui->observerToScreen->setValue(m_settings->option(OBSERVER_TO_SCREEN_IN, Settings::SpecifiedOption).toDouble());
-    ui->screenToBackground->setValue(m_settings->option(SCREEN_TO_BG_IN, Settings::SpecifiedOption).toDouble());
-    ui->betweenEyes->setValue(m_settings->option(BW_EYES_IN, Settings::SpecifiedOption).toDouble());
-    ui->horizontalResolution->setValue(m_settings->option(H_RES_PPI, Settings::SpecifiedOption).toInt());
+    StereogramParameters parameters = StereogramParameters::fromSettings(m_settings);
+    ui->observerToScreen->setValue(parameters.value(OBSERVER_TO_SCREEN_IN, StereogramParameters::SpecifiedOption).toDouble());
+    ui->screenToBackground->setValue(parameters.value(SCREEN_TO_BG_IN, StereogramParameters::SpecifiedOption).toDouble());
+    ui->betweenEyes->setValue(parameters.value(BW_EYES_IN, StereogramParameters::SpecifiedOption).toDouble());
+    ui->horizontalResolution->setValue(parameters.value(H_RES_PPI, StereogramParameters::SpecifiedOption).toInt());
 }
 
 void OptionsDialog::saveToSettings()
 {
     if (m_settings) {
-        m_settings->beginGroup("Options");
-        m_settings->setValue(OBSERVER_TO_SCREEN_IN, ui->observerToScreen->value());
-        m_settings->setValue(SCREEN_TO_BG_IN, ui->screenToBackground->value());
-        m_settings->setValue(BW_EYES_IN, ui->betweenEyes->value());
-        m_settings->setValue(H_RES_PPI, ui->horizontalResolution->value());
-        m_settings->endGroup();
+        StereogramParameters sp;
+        sp.setValue(OBSERVER_TO_SCREEN_IN, ui->observerToScreen->value());
+        sp.setValue(SCREEN_TO_BG_IN, ui->screenToBackground->value());
+        sp.setValue(BW_EYES_IN, ui->betweenEyes->value());
+        sp.setValue(H_RES_PPI, ui->horizontalResolution->value());
+        sp.saveToSettings(m_settings);
     }
 }
 
