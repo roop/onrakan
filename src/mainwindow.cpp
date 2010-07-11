@@ -8,6 +8,7 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QApplication>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -90,8 +91,10 @@ void MainWindow::tileDialog()
 void MainWindow::loadDepthMap(const QString &file)
 {
     QPixmap pixmap(file);
-    if (pixmap.isNull())
-        qDebug() << "Could not load depth map from file:" << file;
+    if (pixmap.isNull()) {
+        QMessageBox::warning(this, "Bad depthmap image", "Could not load depthmap image from file: " + file + ". It's probably not an image file.", QMessageBox::Ok, QMessageBox::Ok);
+        return;
+    }
     m_settings->setValue("Depthmap/path", file);
     loadDepthMap(pixmap);
 }
@@ -106,8 +109,10 @@ void MainWindow::loadDepthMap(const QPixmap &pixmap)
 void MainWindow::loadTile(const QString &file)
 {
     QPixmap pixmap(file);
-    if (pixmap.isNull())
-        qDebug() << "Could not load tile from file:" << file;
+    if (pixmap.isNull()) {
+        QMessageBox::warning(this, "Bad tile image", "Could not load tile image from file: " + file + ". It's probably not an image file.", QMessageBox::Ok, QMessageBox::Ok);
+        return;
+    }
     m_settings->setValue("Tile/path", file);
     m_settings->setValue("Tile/isRandomDot", false);
     loadTile(pixmap);
