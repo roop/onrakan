@@ -71,7 +71,7 @@ void MainWindow::loadDepthMap(const QString &file)
     QPixmap pixmap(file);
     if (pixmap.isNull())
         qDebug() << "Could not load depth map from file:" << file;
-    m_settings->setValue("Image/depthmap", file);
+    m_settings->setValue("Depthmap/path", file);
     loadDepthMap(pixmap);
 }
 
@@ -87,7 +87,8 @@ void MainWindow::loadTile(const QString &file)
     QPixmap pixmap(file);
     if (pixmap.isNull())
         qDebug() << "Could not load tile from file:" << file;
-    m_settings->setValue("Image/tile", file);
+    m_settings->setValue("Tile/path", file);
+    m_settings->setValue("Tile/isRandomDot", false);
     loadTile(pixmap);
 }
 
@@ -109,6 +110,7 @@ void MainWindow::loadRandomDotTile()
             img.setPixel(x, y, rand() % 0xffffff);
         }
     }
+    m_settings->setValue("Tile/isRandomDot", true);
     loadTile(QPixmap::fromImage(img));
 }
 
