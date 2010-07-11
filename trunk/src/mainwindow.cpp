@@ -27,16 +27,8 @@ MainWindow::MainWindow(QWidget *parent)
     m_stereogramScene->addItem(m_stereogramItem);
     ui->arrangementGraphicsView->setScene(m_arrangementScene);
     ui->stereogramGraphicsView->setScene(m_stereogramScene);
-    // loadDepthMap(":/images/default_depth_map.png");
-    // loadRandomDotTile();
-    QString depthMapFile = ":/images/default_depth_map.png";
-    QString tileFile = ":/images/default_tile.png";
-    if (QApplication::arguments().size() > 1)
-        depthMapFile = QApplication::arguments().at(1);
-    if (QApplication::arguments().size() > 2)
-        tileFile = QApplication::arguments().at(2);
-    loadDepthMap(depthMapFile);
-    loadTile(tileFile);
+    loadDepthMap();
+    loadTile();
 
     connect(ui->action_LoadDepthMap, SIGNAL(triggered()), SLOT(depthMapDialog()));
     connect(ui->action_LoadTileFromFile, SIGNAL(triggered()), SLOT(tileDialog()));
@@ -44,6 +36,35 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->action_Options, SIGNAL(triggered()), SLOT(optionsDialog()));
 
     connect(ui->generateStereogramButton, SIGNAL(clicked()), SLOT(generateStereogram()));
+}
+
+void MainWindow::loadDepthMap()
+{
+    QString filename;
+    if (QApplication::arguments().size() > 1) {
+        filename = QApplication::arguments().at(1);
+    } else {
+        filename = m_settings->value("Depthmap/path").toString();
+        if (filename.isEmpty())
+            filename = ":/images/default_depth_map.png";
+    }
+    loadDepthMap(filename);
+}
+
+void MainWindow::loadTile()
+{
+    QString filename;
+    if (QApplication::arguments().size() > 2) {
+        filename = QApplication::arguments().at(2);
+    } else if (m_settings->value("Tile/isRandomDot", false).toBool()) {
+        loadRandomDotTile();
+        return;
+    } else {
+        filename = m_settings->value("Tile/path").toString();
+        if (filename.isEmpty())
+            filename = ":/images/default_tile.png";
+    }
+    loadTile(filename);
 }
 
 void MainWindow::depthMapDialog()
