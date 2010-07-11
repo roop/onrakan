@@ -16,8 +16,10 @@ class MainWindow : public QMainWindow {
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void loadDepthMap();
     void loadDepthMap(const QString &file);
     void loadDepthMap(const QPixmap &pixmap);
+    void loadTile();
     void loadTile(const QString &file);
     void loadTile(const QPixmap &pixmap);
 
