@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     // loadDepthMap(":/images/default_depth_map.png");
     // loadRandomDotTile();
     QString depthMapFile = ":/images/default_depth_map.png";
-    QString tileFile = "../../../../web/bluetile.jpg";
+    QString tileFile = ":/images/default_tile.png";
     if (QApplication::arguments().size() > 1)
         depthMapFile = QApplication::arguments().at(1);
     if (QApplication::arguments().size() > 2)
@@ -71,6 +71,7 @@ void MainWindow::loadDepthMap(const QString &file)
     QPixmap pixmap(file);
     if (pixmap.isNull())
         qDebug() << "Could not load depth map from file:" << file;
+    m_settings->setValue("Image/depthmap", file);
     loadDepthMap(pixmap);
 }
 
@@ -86,6 +87,7 @@ void MainWindow::loadTile(const QString &file)
     QPixmap pixmap(file);
     if (pixmap.isNull())
         qDebug() << "Could not load tile from file:" << file;
+    m_settings->setValue("Image/tile", file);
     loadTile(pixmap);
 }
 
